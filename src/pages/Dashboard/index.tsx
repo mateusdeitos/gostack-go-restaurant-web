@@ -9,6 +9,7 @@ import ModalAddFood from '../../components/ModalAddFood';
 import ModalEditFood from '../../components/ModalEditFood';
 
 import { FoodsContainer } from './styles';
+import SuccessMessage from '../../components/SuccessMessage';
 
 interface IFoodPlate {
   id: number;
@@ -24,6 +25,7 @@ const Dashboard: React.FC = () => {
   const [editingFood, setEditingFood] = useState<IFoodPlate>({} as IFoodPlate);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     async function loadFoods(): Promise<void> {
@@ -45,6 +47,12 @@ const Dashboard: React.FC = () => {
       });
 
       setFoods([...foods, response.data]);
+
+      setShowSuccessMessage(true);
+
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (err) {
       console.log(err);
     }
@@ -88,6 +96,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
+      {showSuccessMessage && <SuccessMessage />}
       <Header openModal={toggleModal} />
       <ModalAddFood
         isOpen={modalOpen}
